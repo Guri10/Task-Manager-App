@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors"); // Import CORS middleware
-const connection = require("./config/db");
+const pool = require("./config/db"); // Use the connection pool
 const taskRoutes = require("./routes/taskRoutes");
 
 const app = express();
@@ -15,26 +15,29 @@ app.use(cors({
 // Middleware
 app.use(express.json());
 
+// Root Route
 app.get("/", (req, res) => {
     res.send("Task Manager API is running!");
 });
 
 // Test MySQL connection
-app.get("/test-db", (req, res) => {
-    connection.query("SHOW DATABASES", (err, results) => {
-        if (err) {
-            console.error("❌ Error querying databases:", err);
-            res.status(500).send("Error connecting to the database");
-            return;
-        }
-        console.log("✅ Databases:", results);
-        res.send(results);
-    });
+app.get("/test-db", async (req, res) => {
+    try {
+        const [results] = await pool.query("SHOW DATABASES");
+        res.json({ message: "Database connected successfully!", databases: results });
+    } catch (err) {
+        console.error("❌ Error querying databases:", err.message);
+        res.status(500).send({
+            error: "Error connecting to the database",
+            details: err.message,
+        });
+    }
 });
 
-// Routes
+// Task Routes
 app.use("/tasks", taskRoutes);
 
+// Start the Server
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {
     console.log(`🚀 Server running on port ${PORT}`);
