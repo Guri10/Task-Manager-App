@@ -10,7 +10,7 @@ app.use(cors({
     origin: "*", // Allow requests from any origin
     methods: "GET,POST,PUT,DELETE",
     credentials: true
-}));
+}));g
 
 // Middleware
 app.use(express.json());
