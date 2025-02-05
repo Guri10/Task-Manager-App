@@ -6,7 +6,11 @@ const taskRoutes = require("./routes/taskRoutes");
 const app = express();
 
 // ✅ Enable CORS to allow requests from frontend
-app.use(cors());
+app.use(cors({
+    origin: "*", // Allow requests from any origin
+    methods: "GET,POST,PUT,DELETE",
+    credentials: true
+}));
 
 // Middleware
 app.use(express.json());
