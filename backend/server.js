@@ -20,19 +20,21 @@ app.get("/", (req, res) => {
     res.send("Task Manager API is running!");
 });
 
-// Test MySQL connection
+// test connection
 app.get("/test-db", async (req, res) => {
     try {
-        const [results] = await pool.query("SHOW DATABASES");
-        res.json({ message: "Database connected successfully!", databases: results });
+        const results = await pool.query("SELECT NOW();"); // Test query for PostgreSQL
+        res.json({ message: "✅ Database connected successfully!", time: results.rows[0] });
     } catch (err) {
-        console.error("❌ Error querying databases:", err.message);
+        console.error("❌ Error querying databases:", err);
         res.status(500).send({
             error: "Error connecting to the database",
             details: err.message,
         });
     }
 });
+
+
 
 // Task Routes
 app.use("/tasks", taskRoutes);

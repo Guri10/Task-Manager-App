@@ -1,18 +1,15 @@
-const mysql = require("mysql2");
+const { Pool } = require("pg");
 const dotenv = require("dotenv");
 
-dotenv.config(); // Load environment variables from .env file
+dotenv.config();
 
-// Create a MySQL connection pool
-const pool = mysql.createPool({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
-    waitForConnections: true,
-    connectionLimit: 10,  // Maximum number of connections in the pool
-    queueLimit: 0        // Unlimited queue
+const pool = new Pool({
+    connectionString: process.env.DB_URL, // Use connection string from .env
+    ssl: {
+        rejectUnauthorized: false, // Required for NeonDB
+    },
 });
 
-// Export the pool as a promise
-module.exports = pool.promise();
+console.log("✅ Connected to PostgreSQL!");
+
+module.exports = pool; // No need for `.getConnection()`, just export `pool`
