@@ -18,12 +18,19 @@ const EditTask = () => {
     }, [id]);
 
     if (!task) {
-        return <p>Loading task...</p>;
+        return (
+            <div className="flex items-center justify-center min-h-screen">
+                <p className="text-lg font-semibold text-gray-600">Loading task...</p>
+            </div>
+        );
     }
 
     return (
-        <div>
-            <TaskForm task={task} isEditing={true} />
+        <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">
+            <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-xl">
+                <h2 className="text-2xl font-semibold text-gray-800 mb-4 text-center">Edit Task</h2>
+                <TaskForm task={task} isEditing={true} />
+            </div>
         </div>
     );
 };

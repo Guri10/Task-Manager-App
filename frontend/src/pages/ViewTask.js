@@ -17,16 +17,24 @@ const ViewTask = () => {
     }, [id]);
 
     if (!task) {
-        return <p>Loading task...</p>;
+        return (
+            <div className="flex items-center justify-center min-h-screen">
+                <p className="text-lg font-semibold text-gray-600">Loading task...</p>
+            </div>
+        );
     }
 
     return (
-        <div>
-            <h2>{task.title}</h2>
-            <p>{task.description}</p>
-            <p>Priority: {task.priority}</p>
-            <p>Status: {task.status}</p>
-            <p>Due Date: {task.due_date}</p>
+        <div className="min-h-screen bg-gray-100 flex items-center justify-center p-6">
+            <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-xl">
+                <h2 className="text-2xl font-semibold text-gray-800 mb-4 text-center">{task.title}</h2>
+                <div className="space-y-4">
+                    <p className="text-lg text-gray-700"><strong>Description:</strong> {task.description}</p>
+                    <p className="text-lg text-gray-700"><strong>Priority:</strong> {task.priority}</p>
+                    <p className="text-lg text-gray-700"><strong>Status:</strong> {task.status}</p>
+                    <p className="text-lg text-gray-700"><strong>Due Date:</strong> {task.due_date}</p>
+                </div>
+            </div>
         </div>
     );
 };
